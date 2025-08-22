@@ -1,0 +1,5 @@
+/build
+.vs
+qemu.log
+*.iso
+/iso/boot/kernel.elf
