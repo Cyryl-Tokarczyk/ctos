@@ -65,7 +65,7 @@ void printSetColor(enum PrintColor foreground, enum PrintColor background)
 void scrollScreen()
 {
 	// Push all values up one row
-	for (size_t row = 1; row < rowsNumber - 1; row++)
+	for (size_t row = 1; row < rowsNumber; row++)
 	{
 		for (size_t col = 0; col < columnsNumber; col++)
 		{

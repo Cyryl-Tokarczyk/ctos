@@ -1,4 +1,6 @@
 #include "print_vga.h"
+#include "conversion.h"
+#include <limits.h>
 
 void kernel_main() {
 	printClear();
@@ -16,14 +18,17 @@ void kernel_main() {
 		printCharacter('B');
 	}
 
-
 	printCharacter('C');
 	printString("jazda");
 	printString(" z \n testami");
 	printCharacter('\n');
 	printString("testtest");
-	for (size_t i = 0; i < 30; i++)
+
+	char buffer[10];
+
+	for (size_t i = 0; i < INT_MAX; i++)
 	{
-		printString("testtest \n");
+		printString(intToString(i, buffer));
+		printCharacter('\n');
 	}
 }
