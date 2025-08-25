@@ -1,6 +1,6 @@
 #include "print_vga.h"
+#include "serial_port.h"
 #include "conversion.h"
-#include <limits.h>
 
 void kernel_main() {
 	printClear();
@@ -22,13 +22,9 @@ void kernel_main() {
 	printString("jazda");
 	printString(" z \n testami");
 	printCharacter('\n');
-	printString("testtest");
+
 
 	char buffer[10];
-
-	for (size_t i = 0; i < INT_MAX; i++)
-	{
-		printString(intToString(i, buffer));
-		printCharacter('\n');
-	}
+	printString("Serial port COM1 status: ");
+	printString(intToString(initSerialPort(), buffer));
 }
