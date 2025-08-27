@@ -15,14 +15,8 @@
 #define ModemControlPort(base)		(base + 4)
 #define LineStatusPort(base)		(base + 5)
 
-// For now it doesn't take any arguments, because i want to use default values
-// but I don't want to go through the hassle of setting it up as C++ just yet
-
-int initSerialPort(/*uint16_t port = COM1, uint16_t baudRateDivisor = 3*/)
+int initSerialPort(uint16_t port, uint16_t baudRateDivisor)
 {
-	uint16_t port = COM1;
-	uint16_t baudRateDivisor = 3;
-
 	// Enable DLAB
 	out(LineControlPort(port), 0x80);
 
@@ -54,4 +48,30 @@ int initSerialPort(/*uint16_t port = COM1, uint16_t baudRateDivisor = 3*/)
 	out(ModemControlPort(port), 0x03);
 
 	return 0;
+}
+
+// Set the buffer size for the FIFO queue (14 bytes)
+const size_t BufferSize = 14;
+
+void printToSerialPort(uint16_t port, char* string)
+{
+	size_t i = 0;
+
+	while (string[i])
+	{
+		// Fill the queue
+
+		for (size_t j = 0; j < BufferSize; i++, j++)
+		{
+			out(DataPort(port), string[i]);
+
+			if (!string[i])
+			{
+				return;
+			}
+		}
+
+		// Check if queue empty (bit 5 must be 0)
+		while (!(in(LineStatusPort(port)) & 0x20)) {}
+	}
 }

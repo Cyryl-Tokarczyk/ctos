@@ -26,5 +26,7 @@ void kernel_main() {
 
 	char buffer[10];
 	printString("Serial port COM1 status: ");
-	printString(intToString(initSerialPort(), buffer));
+	printString(intToString(initSerialPort(COM1, 3), buffer));
+	printToSerialPort(COM1, "Test wypisywania na serial port");
+
 }
