@@ -8,7 +8,7 @@ AS := nasm
 ASFLAGS := -f elf32
 
 i386_ASM_SOURCE_FILES := $(shell find src/i386 -name '*.asm')
-i386_ASM_OBJECT_FILES := $(patsubst src/i386/%.asm, build/i386/%.o, $(i386_ASM_SOURCE_FILES))
+i386_ASM_OBJECT_FILES := $(patsubst src/i386/%.asm, build/i386/%.asm.o, $(i386_ASM_SOURCE_FILES))
 
 i386_C_SOURCE_FILES := $(shell find src/i386 -name '*.c')
 i386_C_OBJECT_FILES := $(patsubst src/i386/%.c, build/i386/%.o, $(i386_C_SOURCE_FILES))
@@ -42,7 +42,7 @@ build/i386/%.o: src/i386/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $< -o $@
 
-build/i386/%.o: src/i386/%.asm
+build/i386/%.asm.o: src/i386/%.asm
 	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) $< -o $@
 
@@ -58,7 +58,7 @@ debug: debug.cpp src/common/conversion.c
 	g++ -I include debug.cpp src/common/conversion.c -o debug
 
 test:
-	echo $(COMMON_C_OBJECT_FILES)
+	echo $(i386_ASM_OBJECT_FILES)
 
 run: os.iso
 	qemu-system-i386 -cdrom os.iso -d int,cpu_reset -D qemu.log -chardev file,id=char0,path=qemu_serial.log -serial chardev:char0

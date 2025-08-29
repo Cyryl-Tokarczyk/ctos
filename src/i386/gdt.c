@@ -1,6 +1,6 @@
 #include "gdt.h"
 
-// Refer to "Intel® 64 and IA-32 Architectures Software Developer’s Manual Vol. 3A" Chapter 3
+// Refer to "Intel 64 and IA-32 Architectures Software Developer's Manual Vol. 3A" Chapter 3
 // for further explanation
 
 struct GDTEntry
@@ -27,6 +27,43 @@ struct GDTEntryTest
 	uint8_t Granularity : 1;
 	uint8_t BaseAddress24_31;
 } __attribute__((packed));
+typedef struct GDTEntryTest GDTEntryTest;
+
+GDTEntryTest* createGDTEntry(GDTEntryTest* gdtEntry, uint8_t type)
+{
+	// Size of the segment (we want it to occupy the whole memory)
+	// It's multiplied by 1-byte when granularity = 0
+	// and by 4KB when granularity = 1
+
+	gdtEntry->SegmentLimit0_15 = 0xFFFF;
+	gdtEntry->SegmentLimit16_19 = 0xF;
+
+	// Start address of the segment
+
+	gdtEntry->BaseAddress0_15 = 0;
+	gdtEntry->BaseAddress16_23 = 0;
+	gdtEntry->BaseAddress24_31 = 0;
+
+	gdtEntry->Type = type; // See table 3.1 in Intel Developer Manual (see above)
+
+	gdtEntry->DescriptorType = 1; // 0 = system, 1 = code or data
+	gdtEntry->DescriptorPrivilegeLevel = 0; // Highest privilege
+	gdtEntry->SegmentPresent = 1; // Is the segment present in memory (generally yes)
+
+	gdtEntry->AVL = 0; // Doesn't matter
+
+	gdtEntry->L = 0; // In 32-bit mode should be set to 0
+
+	gdtEntry->OperationSize = 1; // This flag should always be set to 1 for 32 - bit code and data segments
+
+	gdtEntry->Granularity = 1; // To multiply size by 4KB
+
+	return gdtEntry;
+}
+
+#define NumberOfGDTEntries 3
+
+GDTEntryTest gdt[NumberOfGDTEntries];
 
 void initGDT()
 {
@@ -34,47 +71,28 @@ void initGDT()
 
 	// GDT entries:
 	// 0 -> null entry (required)
-	// 1 -> code segment
-	// 2 -> data segment
+	// 1 -> code segment, type 0b1010 = Execute/Read
+	// 2 -> data segment, type 0b0010 = Read/Write
 
-	struct GDTEntryTest gdt[3];
-
-	gdt[0] = 0;
-
-	// Size of the segment (we want it to occupy the whole memory)
-	// It's multiplied by 1-byte when granularity = 0
-	// and by 4KB when granularity = 1
-
-	gdt[1].SegmentLimit0_15 = 0xFFFF;
-	gdt[1].SegmentLimit16_19 = 0xF;
-
-	// Start address of the segment
-
-	gdt[1].BaseAddress0_15 = 0;
-	gdt[1].BaseAddress16_23 = 0;
-	gdt[1].BaseAddress24_31 = 0;
-
-	// Type 0b1010 means Execute/Read
-
-	gdt[1].Type = 0xA;
-
-	gdt[1].DescriptorType = 1;
-	gdt[1].DescriptorPrivilegeLevel = 0; // Highest privilege
-	gdt[1].SegmentPresent = 1;
-
-	gdt[1].AVL = 0;
-
-	gdt[1].L = 0; // In 32-bit mode should be set to 0
-
-	gdt[1].OperationSize = 1; // This flag should always be set to 1 for 32 - bit code and data segments
-
-	gdt[1].Granularity = 1; // To multiply size by 4KB
+	gdt[0] = (GDTEntryTest){0};
+	createGDTEntry(&gdt[1], 0xA);
+	createGDTEntry(&gdt[2], 0x2);
 
 	// Set up GDT descriptor (address and size)
 
+	struct GDTDescriptor gdtDesc;
+	gdtDesc.limit = sizeof(GDTEntryTest) * NumberOfGDTEntries - 1;
+	gdtDesc.baseAddress = (uint32_t) gdt;
+
 	// Load GDT with asm lgdt
 
-	// Load the segment registers
+	loadGDT(gdtDesc);
+
+	// Load the data segment registers
+
+	loadDataSegmentRegisters();
 
 	// Load the code segment register (with far jump)
+
+	loadCodeSegmentRegister();
 }

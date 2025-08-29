@@ -1,1 +1,7 @@
-qemu-system-i386 -cdrom os.iso -d int,cpu_reset -D qemu.log -chardev file,id=char0,path=qemu_serial.log -serial chardev:char0
+qemu-system-i386 `
+    -cdrom os.iso `
+    -d int,cpu_reset `
+    -D qemu.log `
+    -chardev file,id=char0,path=qemu_serial.log `
+    -serial chardev:char0 `
+    -no-reboot
