@@ -1,8 +1,12 @@
+#include "gdt.h"
 #include "print_vga.h"
 #include "serial_port.h"
 #include "conversion.h"
 
 void kernel_main() {
+
+	initGDT();
+
 	printClear();
 
 
@@ -25,6 +29,12 @@ void kernel_main() {
 
 
 	char buffer[10];
+
+	struct GDTEntryTest gdtTest;
+
+	printString("Struct size: ");
+	printString(intToString(sizeof(gdtTest), buffer));
+
 	printString("Serial port COM1 status: ");
 	printString(intToString(initSerialPort(COM1, 3), buffer));
 	printToSerialPort(COM1, "Test wypisywania na serial port");
