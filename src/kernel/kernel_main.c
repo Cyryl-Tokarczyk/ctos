@@ -1,7 +1,7 @@
-#include "gdt.h"
-#include "print_vga.h"
-#include "serial_port.h"
-#include "conversion.h"
+#include "i386/gdt.h"
+#include "i386/print_vga.h"
+#include "i386/serial_port.h"
+#include "common/conversion.h"
 
 void kernel_main()
 {

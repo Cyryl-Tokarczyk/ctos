@@ -1,4 +1,4 @@
-#include "gdt.h"
+#include "i386/gdt.h"
 
 // Refer to "Intel 64 and IA-32 Architectures Software Developer's Manual Vol. 3A" Chapter 3
 // for further explanation

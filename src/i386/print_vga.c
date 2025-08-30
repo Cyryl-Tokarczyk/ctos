@@ -1,4 +1,4 @@
-#include "print_vga.h"
+#include "i386/print_vga.h"
 
 uint16_t* vgaBuffer = (uint16_t*) 0xB8000;
 

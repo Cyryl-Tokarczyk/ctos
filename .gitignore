@@ -4,3 +4,4 @@
 *.iso
 /iso/boot/kernel.elf
 debug*
+.vscode
