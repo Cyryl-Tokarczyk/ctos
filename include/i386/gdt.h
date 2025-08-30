@@ -9,7 +9,7 @@ struct GDTDescriptor
 	uint32_t baseAddress;
 } __attribute__((packed));
 
-void initGDT();
+void createAndLoadGDT();
 
 void loadGDT(struct GDTDescriptor gdtDesc);
 void loadDataSegmentRegisters();

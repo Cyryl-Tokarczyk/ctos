@@ -65,7 +65,7 @@ GDTEntryTest* createGDTEntry(GDTEntryTest* gdtEntry, uint8_t type)
 
 GDTEntryTest gdt[NumberOfGDTEntries];
 
-void initGDT()
+void createAndLoadGDT()
 {
 	// Set up GDT
 
@@ -87,12 +87,4 @@ void initGDT()
 	// Load GDT with asm lgdt
 
 	loadGDT(gdtDesc);
-
-	// Load the data segment registers
-
-	loadDataSegmentRegisters();
-
-	// Load the code segment register (with far jump)
-
-	loadCodeSegmentRegister();
 }

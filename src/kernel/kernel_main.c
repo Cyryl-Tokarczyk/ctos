@@ -1,14 +1,12 @@
-#include "i386/gdt.h"
+#include "i386/init_protected_mode.h"
 #include "i386/print_vga.h"
 #include "i386/serial_port.h"
 #include "common/conversion.h"
 
 void kernel_main()
 {
-	initGDT();
-
+	if (initProtectedMode() != 0) return;
 	printClear();
-
 
 	uint32_t test = 0x12345678;
 	uint8_t* bytes = (uint8_t*)&test;
