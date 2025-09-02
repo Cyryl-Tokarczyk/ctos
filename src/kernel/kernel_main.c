@@ -1,4 +1,5 @@
-#include "i386/init_protected_mode.h"
+#include "i386/cpu_init/init_protected_mode.h"
+#include "i386/cpu_init/idt.h"
 #include "i386/print_vga.h"
 #include "i386/serial_port.h"
 #include "common/conversion.h"
@@ -6,6 +7,8 @@
 void kernel_main()
 {
 	if (initProtectedMode() != 0) return;
+	initIDT(); // Interrupts
+
 	printClear();
 
 	uint32_t test = 0x12345678;
@@ -35,5 +38,5 @@ void kernel_main()
 
 	printString("Serial port COM1 status: ");
 	printString(intToString(initSerialPort(COM1, 3), buffer));
-	printToSerialPort(COM1, "Test wypisywania na serial port");
+	printStringToSerialPort(COM1, "Test wypisywania na serial port");
 }

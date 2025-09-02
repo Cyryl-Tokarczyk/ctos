@@ -1,4 +1,4 @@
-#include "i386/gdt.h"
+#include "i386/cpu_init/gdt.h"
 
 int initProtectedMode();
 

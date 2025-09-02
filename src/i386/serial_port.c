@@ -53,7 +53,7 @@ int initSerialPort(uint16_t port, uint16_t baudRateDivisor)
 // Set the buffer size for the FIFO queue (14 bytes)
 const size_t BufferSize = 14;
 
-void printToSerialPort(uint16_t port, char* string)
+void printStringToSerialPort(uint16_t port, char* string)
 {
 	size_t i = 0;
 

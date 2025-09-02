@@ -11,6 +11,8 @@ struct GDTDescriptor
 
 void createAndLoadGDT();
 
+// Assembler:
+
 void loadGDT(struct GDTDescriptor gdtDesc);
 void loadDataSegmentRegisters();
 void loadCodeSegmentRegister();

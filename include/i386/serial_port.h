@@ -12,4 +12,4 @@ enum SerialPorts
 
 int initSerialPort(uint16_t port, uint16_t baudRateDivisor);
 
-void printToSerialPort(uint16_t port, char* string);
+void printStringToSerialPort(uint16_t port, char* string);

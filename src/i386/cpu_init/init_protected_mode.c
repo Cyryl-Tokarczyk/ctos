@@ -1,4 +1,4 @@
-#include "i386/init_protected_mode.h"
+#include "i386/cpu_init/init_protected_mode.h"
 
 int initProtectedMode()
 {
