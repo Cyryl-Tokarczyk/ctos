@@ -3,6 +3,12 @@
 // Refer to "Intel 64 and IA-32 Architectures Software Developer's Manual Vol. 3A" Chapter 3
 // for further explanation
 
+// Sidenote:
+// Segment selector structure:
+// 0 - 1 -> Requested Privilege Level
+// 2     -> Table Indicator 0 = GDT, 1 = LDT
+// 3 - 15 -> index of the GDT/LDT entry
+
 struct GDTEntry
 {
 	uint16_t SegmentLimit0_15;

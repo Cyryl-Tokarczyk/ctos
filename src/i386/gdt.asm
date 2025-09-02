@@ -23,6 +23,6 @@ loadDataSegmentRegisters:
     ret
 
 loadCodeSegmentRegister:
-    jmp 0x08:.loadCS ; 0x08 points means index of the code segment in GDT = 1
+    jmp 0x08:.loadCS ; 0x08 means index of the code segment in GDT = 1 (the index bits start from the 3rd bit hence the 8)
 .loadCS:
     ret
