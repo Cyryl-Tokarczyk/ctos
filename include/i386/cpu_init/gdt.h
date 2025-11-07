@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 
-// Ref. Intel Developer Manual Vol. 3A, Chapter 2.4
-struct GDTDescriptor
+// Ref. Intel Developer Manual Vol. 3A, Chapter 2.4, Fig. 2-6
+struct GDTRegister
 {
 	uint16_t limit; // Number of bytes in the GDT - 1
 	uint32_t baseAddress;
@@ -11,8 +11,8 @@ struct GDTDescriptor
 
 void createAndLoadGDT();
 
-// Assembler:
+// Assembly:
 
-void loadGDT(struct GDTDescriptor gdtDesc);
+void loadGDT(struct GDTRegister gdtReg);
 void loadDataSegmentRegisters();
 void loadCodeSegmentRegister();

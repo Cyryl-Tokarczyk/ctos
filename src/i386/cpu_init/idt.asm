@@ -1,5 +1,7 @@
 extern commonInterruptHandler
 
+global isr_stub_1
+
 %macro isr_error_stub 1
 isr_stub_%1:
     push dword %1 ; interrupt number
@@ -68,3 +70,15 @@ isr_stub_table:
     dd isr_stub_%+i
 %assign i i+1
 %endrep
+
+; loadIDT - load an Interrupt Descriptor Table
+; stack: 
+;		[esp + 4] - idt register struct
+;		[esp] - return address
+
+global loadIDT
+
+loadIDT:
+    cli
+    lidt [esp + 4]
+    ret

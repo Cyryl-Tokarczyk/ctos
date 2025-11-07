@@ -1,5 +1,6 @@
 #include "i386/cpu_init/init_protected_mode.h"
 #include "i386/cpu_init/idt.h"
+#include "i386/interrupts.h"
 #include "i386/print_vga.h"
 #include "i386/serial_port.h"
 #include "common/conversion.h"
@@ -38,5 +39,21 @@ void kernel_main()
 
 	printString("Serial port COM1 status: ");
 	printString(intToString(initSerialPort(COM1, 3), buffer));
+	printCharacter('\n');
 	printStringToSerialPort(COM1, "Test wypisywania na serial port");
+	printStringToSerialPort(COM1, "\n");
+
+	GeneralPurposeRegisters gpr;
+
+	commonInterruptHandler(gpr, 0, 0);
+
+	__asm__ volatile ("int $1");
+
+	isr_stub_1();
+	testInterrupts();
+
+	printString("After interrupt test \n");
+
+	printStringToSerialPort(COM1, "Test wypisywania na serial port");
+	printStringToSerialPort(COM1, "\n");
 }

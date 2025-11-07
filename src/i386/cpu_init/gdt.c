@@ -76,13 +76,13 @@ void createAndLoadGDT()
 	createGDTEntry(&gdt[1], 0xA);
 	createGDTEntry(&gdt[2], 0x2);
 
-	// Set up GDT descriptor (address and size)
+	// Set up GDT register (address and size)
 
-	struct GDTDescriptor gdtDesc;
-	gdtDesc.limit = sizeof(GDTEntry) * NumberOfGDTEntries - 1;
-	gdtDesc.baseAddress = (uint32_t) gdt;
+	struct GDTRegister gdtReg;
+	gdtReg.limit = sizeof(GDTEntry) * NumberOfGDTEntries - 1;
+	gdtReg.baseAddress = (uint32_t) gdt;
 
 	// Load GDT with asm lgdt
 
-	loadGDT(gdtDesc);
+	loadGDT(gdtReg);
 }
