@@ -17,7 +17,7 @@ global testInterrupts
 ;		[esp] - return address
 
 testInterrupts:
-    int 3
+    int 0
     ret
 
 ; testInterrupts:

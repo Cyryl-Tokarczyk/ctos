@@ -38,6 +38,6 @@ void isr_stub_1();
 
 // Assembly:
 
-extern void** isr_stub_table;
+extern void*** isr_stub_table;
 
 void loadIDT(struct IDTRegister idtReg);

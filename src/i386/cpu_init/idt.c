@@ -17,6 +17,21 @@ IDTEntry* createIDTEntry(IDTEntry* idtEntry, size_t idtIndex)
     idtEntry->Offset0_15 = (uint32_t) isr_stub_table[idtIndex] & 0xFFFF;
     idtEntry->Offset16_31 = (uint32_t) isr_stub_table[idtIndex] >> 16;
 
+    if (idtIndex == 0)
+    {
+        idtEntry->Offset0_15 = 0x1030;
+        idtEntry->Offset16_31 = 0x0010;
+    }    
+
+    char buffer[24];
+    printStringToSerialPort(COM1, "Address of the isr stub:");
+    printStringToSerialPort(COM1, intToString((uint32_t) isr_stub_table[idtIndex] & 0xFFFF, buffer));
+    printStringToSerialPort(COM1, intToString((uint32_t) isr_stub_table[idtIndex] >> 16, buffer));
+    printStringToSerialPort(COM1, "\n");
+    printStringToSerialPort(COM1, "Actual address of the isr stub:");
+    printStringToSerialPort(COM1, intToString((uint32_t) isr_stub_table[idtIndex], buffer));
+    printStringToSerialPort(COM1, "\n");
+
     SegmentSelector segSel;
     segSel.RequestedPrivilegeLevel = 0;
     segSel.TableIndicator = 0;
@@ -40,6 +55,11 @@ static IDTEntry idt[NumberOfIDTEntries] __attribute__((aligned(8)));
 void initIDT()
 {
     // Set up IDT
+
+    char buffer[24];
+    printStringToSerialPort(COM1, "IDT table address:");
+    printStringToSerialPort(COM1, intToString((uint32_t) isr_stub_table, buffer));
+    printStringToSerialPort(COM1, "\n");
 
     for (size_t i = 0; i < NumberOfIDTEntries; i++)
     {

@@ -30,6 +30,10 @@ void kernel_main()
 	printCharacter('\n');
 
 
+	testInterrupts();
+	testInterrupts();
+
+
 	char buffer[10];
 
 	// struct GDTEntryTest gdtTest;
@@ -43,14 +47,11 @@ void kernel_main()
 	printStringToSerialPort(COM1, "Test wypisywania na serial port");
 	printStringToSerialPort(COM1, "\n");
 
-	GeneralPurposeRegisters gpr;
+	// GeneralPurposeRegisters gpr;
 
-	commonInterruptHandler(gpr, 0, 0);
+	// commonInterruptHandler(gpr, 0, 0);
 
-	__asm__ volatile ("int $1");
-
-	isr_stub_1();
-	testInterrupts();
+	// isr_stub_1();
 
 	printString("After interrupt test \n");
 
